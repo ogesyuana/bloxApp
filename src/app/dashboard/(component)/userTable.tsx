@@ -6,17 +6,11 @@ import { ColumnsType } from 'antd/es/table';
 import { useGetUserPage } from '@/hooks/useGetData';
 import { useRouter } from "next/navigation";
 import { useDeleteUser } from '@/hooks/useDeleteUser';
+import { APIErrorDetail, User } from '@/types';
+import axios from 'axios';
 
 const { Option } = Select;
 const { confirm } = Modal;
-
-type User = {
-    id: number;
-    name: string;
-    email: string;
-    gender: string;
-    status: string;
-};
 
 
 export default function UserTable() {
@@ -30,7 +24,7 @@ export default function UserTable() {
 
     const { data: users, isLoading } = useGetUserPage(page, perPage);
 
-    const filteredData = users?.data?.filter((user: any) => {
+    const filteredData = users?.data?.filter((user: User) => {
         return (
             (!genderFilter || user.gender === genderFilter) &&
             (!statusFilter || user.status === statusFilter) &&
@@ -51,14 +45,19 @@ export default function UserTable() {
                     onSuccess: () => {
                         message.success('User deleted successfully');
                     },
-                    onError: (err: any) => {
-                        const errorList = err?.response?.data;
-                        if (Array.isArray(errorList)) {
-                            errorList.forEach((e: any) => {
-                                message.error(`${e.field}: ${e.message}`);
-                            });
+                    onError: (error: Error) => {
+                        if (axios.isAxiosError(error)) {
+                            const errorList = error.response?.data;
+
+                            if (Array.isArray(errorList)) {
+                                errorList.forEach((e: APIErrorDetail) => {
+                                    message.error(`${e.field}: ${e.message}`);
+                                });
+                            } else {
+                                message.error('Failed to create post.');
+                            }
                         } else {
-                            message.error('Failed to delete user.');
+                            message.error('An unexpected error occurred.');
                         }
                     }
                 });

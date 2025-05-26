@@ -6,16 +6,10 @@ import { ColumnsType } from 'antd/es/table';
 import { useGetPostPage } from '@/hooks/useGetData';
 import { useRouter } from "next/navigation";
 import { useDeleteUser } from '@/hooks/useDeleteUser';
+import { APIErrorDetail, PostTable, UseGetPostPage } from '@/types';
+import axios from 'axios';
 
 const { confirm } = Modal;
-
-type Post = {
-    id: number;
-    user_id: number;
-    name: string;
-    title: string;
-    body: string;
-};
 
 
 export default function UserTable() {
@@ -27,7 +21,7 @@ export default function UserTable() {
 
     const { data: posts, isLoading } = useGetPostPage(page, perPage);
 
-    const filteredData = posts?.data?.filter((post: any) => {
+    const filteredData = posts?.data?.filter((post: UseGetPostPage) => {
         return (
             (post.name.toLowerCase().includes(search.toLowerCase()) ||
                 post.body.toLowerCase().includes(search.toLowerCase()) ||
@@ -35,7 +29,7 @@ export default function UserTable() {
         );
     });
 
-    const showDeleteConfirm = (user: Post) => {
+    const showDeleteConfirm = (user: PostTable) => {
         confirm({
             title: 'Are you sure delete this user?',
             icon: <ExclamationCircleFilled />,
@@ -47,14 +41,19 @@ export default function UserTable() {
                     onSuccess: () => {
                         message.success('User deleted successfully');
                     },
-                    onError: (err: any) => {
-                        const errorList = err?.response?.data;
-                        if (Array.isArray(errorList)) {
-                            errorList.forEach((e: any) => {
-                                message.error(`${e.field}: ${e.message}`);
-                            });
+                    onError: (error: Error) => {
+                        if (axios.isAxiosError(error)) {
+                            const errorList = error.response?.data;
+
+                            if (Array.isArray(errorList)) {
+                                errorList.forEach((e: APIErrorDetail) => {
+                                    message.error(`${e.field}: ${e.message}`);
+                                });
+                            } else {
+                                message.error('Failed to create post.');
+                            }
                         } else {
-                            message.error('Failed to delete user.');
+                            message.error('An unexpected error occurred.');
                         }
                     }
                 });
@@ -62,11 +61,11 @@ export default function UserTable() {
         });
     };
 
-    const handleEdit = (user: Post) => {
+    const handleEdit = (user: PostTable) => {
         router.push(`/dashboard/create-post?id=${user.user_id}`);
     };
 
-    const columns: ColumnsType<Post> = [
+    const columns: ColumnsType<PostTable> = [
         {
             title: 'ID',
             dataIndex: 'id',

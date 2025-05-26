@@ -2,6 +2,7 @@
 import React, { useEffect, useRef } from 'react';
 import * as echarts from 'echarts';
 import { useGetPostUser } from '@/hooks/useGetData';
+import { UseGetPostUser } from '@/types';
 
 export default function EChartPost() {
     const { data: userPost } = useGetPostUser();
@@ -10,8 +11,8 @@ export default function EChartPost() {
     useEffect(() => {
         const chart = echarts.init(chartRef.current!);
 
-        const usernames = userPost?.data?.map((u: any) => u.name);
-        const postCounts = userPost?.data?.map((u: any) => u.postCount);
+        const usernames = userPost?.data?.map((u: UseGetPostUser) => u.name);
+        const postCounts = userPost?.data?.map((u: UseGetPostUser) => u.postCount);
 
         chart.setOption({
             title: {

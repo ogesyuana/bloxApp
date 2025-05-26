@@ -61,7 +61,7 @@ export default function Navbar() {
                 </div>
                 <div className="user">
                     <Flex gap="small" align="center" vertical={false}>
-                        <Avatar size={40} src={<img src={'/assets/img/avatar.png'} alt="avatar" />} />
+                        <Avatar size={40} src={'/assets/img/avatar.png'} alt="Avatar" />
                         <Flex className="hidden md:block" align="start" vertical>
                             <p className="text-sm font-bold">{username}</p>
                             <p className="text-xs font-bold" style={{ color: '#7C7C7C' }}>Superintendent</p>

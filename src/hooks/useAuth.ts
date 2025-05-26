@@ -12,7 +12,7 @@ export const useNotLogged = () => {
         if (!token) {
             router.push('/login');
         }
-    }, []);
+    }, [router]);
 };
 
 export const useLogged = () => {
@@ -25,7 +25,7 @@ export const useLogged = () => {
         if (token) {
             router.push('/dashboard');
         }
-    }, []);
+    }, [router]);
 };
 
 

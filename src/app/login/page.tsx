@@ -1,18 +1,13 @@
 'use client';
 import React from 'react';
-import { Button, Checkbox, Col, Flex, Form, FormProps, Input, message, Row } from 'antd';
+import { Button, Checkbox, Col, Flex, Form, Input, message, Row } from 'antd';
 import Image from 'next/image'
 import { useRouter } from 'next/navigation';
 import { validate } from '@/libs/axios';
 import { useLogged } from '@/hooks/useAuth';
+import { Login } from '@/types';
 
-type FieldType = {
-  email?: string;
-  token: string;
-  remember?: string;
-};
-
-export default function login() {
+export default function LoginPage() {
   useLogged();
   const router = useRouter();
   const [form] = Form.useForm();
@@ -63,7 +58,7 @@ export default function login() {
               onFinish={onFinish}
               autoComplete="off"
             >
-              <Form.Item<FieldType>
+              <Form.Item<Login>
                 label="Email"
                 name="email"
                 rules={[{ required: true, message: 'Please input your Email!' }]}
@@ -71,7 +66,7 @@ export default function login() {
                 <Input placeholder="Input your email....." />
               </Form.Item>
 
-              <Form.Item<FieldType>
+              <Form.Item<Login>
                 label="Access Token"
                 name="token"
                 rules={[{ required: true, message: 'Please input your Access Token!' }]}
@@ -79,7 +74,7 @@ export default function login() {
                 <Input.Password placeholder="input your Go REST access token....." />
               </Form.Item>
 
-              <Form.Item<FieldType> name="remember" valuePropName="checked" label={null}>
+              <Form.Item<Login> name="remember" valuePropName="checked" label={null}>
                 <Checkbox>Remember me</Checkbox>
               </Form.Item>
 

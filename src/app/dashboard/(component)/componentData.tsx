@@ -1,5 +1,6 @@
 'use client';
-import { Post, useGetPost, useGetUser, User } from "@/hooks/useGetData";
+import { useGetPost, useGetUser } from "@/hooks/useGetData";
+import { Post, User } from "@/types";
 
 export function RenderTotalUsers() {
     const { data: users } = useGetUser();
@@ -11,8 +12,8 @@ export function RenderTotalGender() {
     const { data: users } = useGetUser();
     const user = users?.data || [];
 
-    const totalMale = user.filter((user: any) => user.gender === 'male').length;
-    const totalFemale = user.filter((user: any) => user.gender === 'female').length;
+    const totalMale = user.filter((user: User) => user.gender === 'male').length;
+    const totalFemale = user.filter((user: User) => user.gender === 'female').length;
     const gender = [
         totalFemale,
         totalMale
@@ -24,8 +25,8 @@ export function RenderTotalActive() {
     const { data: users } = useGetUser();
     const user = users?.data || [];
 
-    const totalActive = user.filter((user: any) => user.status === 'active').length;
-    const totalInactive = user.filter((user: any) => user.status === 'inactive').length;
+    const totalActive = user.filter((user: User) => user.status === 'active').length;
+    const totalInactive = user.filter((user: User) => user.status === 'inactive').length;
     const active = [
         totalActive,
         totalInactive

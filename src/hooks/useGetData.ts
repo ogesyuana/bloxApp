@@ -1,20 +1,6 @@
 import { axiosInstance } from '@/libs/axios';
+import { UseGetPostUser, UseGetPostPage } from '@/types';
 import { useQuery } from '@tanstack/react-query';
-
-export type User = {
-    id: number;
-    name: string;
-    email: string;
-    gender: string;
-    status: string;
-};
-
-export type Post = {
-    id: number;
-    user_id: number;
-    title: string;
-    body: string;
-};
 
 export const useGetUser = () => {
     const { data, isLoading } = useQuery({
@@ -75,7 +61,7 @@ export const useGetPostUser = () => {
             const usersRes = await axiosInstance.get('/users');
             const users = usersRes.data;
             const postsPerUser = await Promise.all(
-                users.map(async (user: any) => {
+                users.map(async (user: UseGetPostUser) => {
                     const postsRes = await axiosInstance.get(`/users/${user.id}/posts`);
                     return {
                         name: user.name,
@@ -110,7 +96,7 @@ export const useGetPostPage = (page: number, perPage: number = 10) => {
             const users = usersRes.data;
             const total = parseInt(usersRes.headers['x-total']) || 1000;
             const postsPerUser = await Promise.all(
-                users.map(async (user: any) => {
+                users.map(async (user: UseGetPostPage) => {
                     const postsRes = await axiosInstance.get(`/users/${user.id}/posts`);
                     const posts = postsRes.data;
 
