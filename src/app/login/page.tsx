@@ -36,7 +36,7 @@ export default function LoginPage() {
   return (
     <Row>
       <Col xs={24} sm={24} md={24} lg={14} xl={14}>
-        <Flex className="xl:p-[5rem] p-[2rem] min-h-screen" gap="70px" vertical>
+        <Flex className="xl:p-[5rem] p-[2rem] min-h-screen" vertical>
           <div className="logo">
             <Flex gap="large" align="start" vertical={false}>
               <Image
@@ -49,7 +49,7 @@ export default function LoginPage() {
               <p className="text-4xl font-semibold">BloX App</p>
             </Flex>
           </div>
-          <div className="Form-center md:p-10">
+          <div className="Form-center p-10">
             <p className="text-2xl mb-7 font-bold">Login</p>
             <Form
               form={form}
